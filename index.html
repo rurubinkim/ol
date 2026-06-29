@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>아빠 생일 축하해요!</title>
+
+<style>
+body{
+    margin:0;
+    overflow:hidden;
+    font-family:Arial,sans-serif;
+    background:linear-gradient(180deg,#001d4d,#004aad,#5ec8ff);
+    color:white;
+    text-align:center;
+}
+
+h1{
+    margin-top:40px;
+    font-size:50px;
+    animation:pop 1s;
+}
+
+@keyframes pop{
+    from{transform:scale(0);}
+    to{transform:scale(1);}
+}
+
+#gift{
+    font-size:120px;
+    cursor:pointer;
+    transition:.3s;
+}
+
+#gift:hover{
+    transform:scale(1.2) rotate(10deg);
+}
+
+#message{
+    display:none;
+    font-size:30px;
+    margin-top:20px;
+}
+
+.heart{
+    position:absolute;
+    font-size:30px;
+    animation:fly 4s linear forwards;
+}
+
+@keyframes fly{
+    from{
+        transform:translateY(0);
+        opacity:1;
+    }
+    to{
+        transform:translateY(-700px);
+        opacity:0;
+    }
+}
+
+.balloon{
+    position:absolute;
+    font-size:45px;
+    animation:balloon 10s linear infinite;
+}
+
+@keyframes balloon{
+    from{
+        transform:translateY(100vh);
+    }
+    to{
+        transform:translateY(-150px);
+    }
+}
+</style>
+
+</head>
+<body>
+
+<h1>🎉 아빠 생일 축하합니다! 🎉</h1>
+
+<div id="gift">🎁</div>
+
+<div id="message">
+💖 생일 축하해요! 💖<br><br>
+
+항상 우리 가족을 위해<br>
+열심히 일해주셔서 감사합니다.<br><br>
+
+건강하시고 행복한 일만 가득하세요! ❤️<br><br>
+
+사랑해요!! 😊
+</div>
+
+<script>
+
+const gift=document.getElementById("gift");
+const msg=document.getElementById("message");
+
+gift.onclick=()=>{
+
+gift.style.display="none";
+msg.style.display="block";
+
+for(let i=0;i<100;i++){
+
+let h=document.createElement("div");
+h.className="heart";
+h.innerHTML=Math.random()>0.5?"❤️":"💛";
+
+h.style.left=Math.random()*window.innerWidth+"px";
+h.style.top=window.innerHeight+"px";
+
+document.body.appendChild(h);
+
+setTimeout(()=>h.remove(),4000);
+
+}
+
+};
+
+function balloon(){
+
+let b=document.createElement("div");
+b.className="balloon";
+
+let arr=["🎈","🎉","⭐","🎊"];
+
+b.innerHTML=arr[Math.floor(Math.random()*arr.length)];
+
+b.style.left=Math.random()*window.innerWidth+"px";
+
+b.style.animationDuration=(6+Math.random()*5)+"s";
+
+document.body.appendChild(b);
+
+setTimeout(()=>b.remove(),12000);
+
+}
+
+setInterval(balloon,500);
+
+</script>
+
+</body>
+</html>
