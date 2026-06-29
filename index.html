@@ -4,144 +4,151 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>아빠 생일 축하해요!</title>
-
 <style>
+*{box-sizing:border-box}
 body{
-    margin:0;
-    overflow:hidden;
-    font-family:Arial,sans-serif;
-    background:linear-gradient(180deg,#001d4d,#004aad,#5ec8ff);
-    color:white;
-    text-align:center;
+  margin:0; min-height:100vh; overflow:hidden;
+  font-family:Arial,sans-serif; color:white; text-align:center;
+  background:radial-gradient(circle at top,#173b7a,#071126 70%);
 }
-
 h1{
-    margin-top:40px;
-    font-size:50px;
-    animation:pop 1s;
+  margin:40px 15px 10px; font-size:clamp(32px,8vw,70px);
+  color:#ffe68a; text-shadow:0 0 20px gold,0 0 40px orange;
+  animation:glow 1.5s infinite alternate;
 }
-
-@keyframes pop{
-    from{transform:scale(0);}
-    to{transform:scale(1);}
-}
-
+@keyframes glow{to{text-shadow:0 0 30px #fff,0 0 60px gold}}
+.sub{font-size:22px}
 #gift{
-    font-size:120px;
-    cursor:pointer;
-    transition:.3s;
+  font-size:clamp(100px,25vw,180px); cursor:pointer;
+  margin-top:20px; animation:bounce 1.2s infinite;
 }
-
-#gift:hover{
-    transform:scale(1.2) rotate(10deg);
+@keyframes bounce{50%{transform:translateY(-18px) rotate(4deg)}}
+#cake{
+  font-size:90px; display:none; margin-top:10px;
 }
-
-#message{
-    display:none;
-    font-size:30px;
-    margin-top:20px;
+#letter{
+  display:none; margin:20px auto; padding:25px;
+  width:min(90%,430px); border-radius:25px;
+  background:rgba(255,255,255,.14); backdrop-filter:blur(8px);
+  box-shadow:0 0 35px rgba(255,215,0,.8);
+  font-size:22px; line-height:1.6;
 }
-
-.heart{
-    position:absolute;
-    font-size:30px;
-    animation:fly 4s linear forwards;
+.star,.confetti,.balloon,.heart,.fire{
+  position:fixed; pointer-events:none; z-index:-1;
 }
-
-@keyframes fly{
-    from{
-        transform:translateY(0);
-        opacity:1;
-    }
-    to{
-        transform:translateY(-700px);
-        opacity:0;
-    }
+.star{color:white; animation:twinkle 2s infinite alternate}
+@keyframes twinkle{from{opacity:.15}to{opacity:1}}
+.balloon{font-size:45px; animation:up 9s linear forwards; z-index:1}
+@keyframes up{from{transform:translateY(110vh)}to{transform:translateY(-160px)}}
+.confetti{font-size:24px; animation:fall 5s linear forwards; z-index:2}
+@keyframes fall{to{transform:translateY(110vh) rotate(720deg)}}
+.heart{font-size:28px; animation:fly 3s linear forwards; z-index:3}
+@keyframes fly{to{transform:translateY(-500px) scale(1.8);opacity:0}}
+.fire{
+  width:7px;height:7px;border-radius:50%;
+  background:gold; z-index:4;
+  animation:boom .9s ease-out forwards;
 }
-
-.balloon{
-    position:absolute;
-    font-size:45px;
-    animation:balloon 10s linear infinite;
+@keyframes boom{to{transform:translate(var(--x),var(--y));opacity:0}}
+.meteor{
+  position:fixed; width:120px; height:3px; pointer-events:none;
+  background:linear-gradient(90deg,white,transparent);
+  animation:meteor 1s linear forwards; z-index:0;
 }
-
-@keyframes balloon{
-    from{
-        transform:translateY(100vh);
-    }
-    to{
-        transform:translateY(-150px);
-    }
-}
+@keyframes meteor{to{transform:translate(-600px,350px);opacity:0}}
 </style>
-
 </head>
 <body>
 
 <h1>🎉 아빠 생일 축하합니다! 🎉</h1>
-
+<p class="sub">아래 선물을 눌러보세요 ✨</p>
 <div id="gift">🎁</div>
+<div id="cake">🎂🕯️</div>
 
-<div id="message">
-💖 생일 축하해요! 💖<br><br>
-
-항상 우리 가족을 위해<br>
-열심히 일해주셔서 감사합니다.<br><br>
-
-건강하시고 행복한 일만 가득하세요! ❤️<br><br>
-
-사랑해요!! 😊
+<div id="letter">
+  <b>💌 아빠께</b><br><br>
+  생일 정말 축하드려요! 🎉<br>
+  항상 우리 가족을 위해 열심히 일해주셔서 감사합니다.<br>
+  오래오래 건강하시고 행복한 일만 가득하세요.<br><br>
+  ❤️ 사랑합니다 ❤️
 </div>
 
 <script>
-
 const gift=document.getElementById("gift");
-const msg=document.getElementById("message");
+const cake=document.getElementById("cake");
+const letter=document.getElementById("letter");
 
-gift.onclick=()=>{
-
-gift.style.display="none";
-msg.style.display="block";
-
-for(let i=0;i<100;i++){
-
-let h=document.createElement("div");
-h.className="heart";
-h.innerHTML=Math.random()>0.5?"❤️":"💛";
-
-h.style.left=Math.random()*window.innerWidth+"px";
-h.style.top=window.innerHeight+"px";
-
-document.body.appendChild(h);
-
-setTimeout(()=>h.remove(),4000);
-
+for(let i=0;i<180;i++){
+  let s=document.createElement("div");
+  s.className="star"; s.innerHTML="✦";
+  s.style.left=Math.random()*100+"vw";
+  s.style.top=Math.random()*100+"vh";
+  s.style.fontSize=(6+Math.random()*16)+"px";
+  document.body.appendChild(s);
 }
 
-};
+function confetti(){
+  let c=document.createElement("div");
+  c.className="confetti";
+  c.innerHTML=["🎊","🎉","✨","⭐","💛","💙"][Math.floor(Math.random()*6)];
+  c.style.left=Math.random()*100+"vw";
+  c.style.top="-40px";
+  document.body.appendChild(c);
+  setTimeout(()=>c.remove(),5000);
+}
+setInterval(confetti,130);
 
 function balloon(){
+  let b=document.createElement("div");
+  b.className="balloon";
+  b.innerHTML=["🎈","🎈","🎈","🎊"][Math.floor(Math.random()*4)];
+  b.style.left=Math.random()*100+"vw";
+  document.body.appendChild(b);
+  setTimeout(()=>b.remove(),9000);
+}
+setInterval(balloon,900);
 
-let b=document.createElement("div");
-b.className="balloon";
+function boom(x,y){
+  for(let i=0;i<45;i++){
+    let f=document.createElement("div");
+    f.className="fire";
+    f.style.left=x+"px"; f.style.top=y+"px";
+    let a=Math.random()*Math.PI*2, r=70+Math.random()*120;
+    f.style.setProperty("--x",Math.cos(a)*r+"px");
+    f.style.setProperty("--y",Math.sin(a)*r+"px");
+    document.body.appendChild(f);
+    setTimeout(()=>f.remove(),900);
+  }
+}
+setInterval(()=>boom(Math.random()*innerWidth,80+Math.random()*250),1400);
 
-let arr=["🎈","🎉","⭐","🎊"];
-
-b.innerHTML=arr[Math.floor(Math.random()*arr.length)];
-
-b.style.left=Math.random()*window.innerWidth+"px";
-
-b.style.animationDuration=(6+Math.random()*5)+"s";
-
-document.body.appendChild(b);
-
-setTimeout(()=>b.remove(),12000);
-
+function heartBurst(){
+  for(let i=0;i<80;i++){
+    let h=document.createElement("div");
+    h.className="heart"; h.innerHTML=["❤️","💛","💖"][Math.floor(Math.random()*3)];
+    h.style.left=Math.random()*100+"vw";
+    h.style.top="85vh";
+    document.body.appendChild(h);
+    setTimeout(()=>h.remove(),3000);
+  }
 }
 
-setInterval(balloon,500);
+setInterval(()=>{
+  let m=document.createElement("div");
+  m.className="meteor";
+  m.style.left=60+Math.random()*40+"vw";
+  m.style.top=Math.random()*35+"vh";
+  document.body.appendChild(m);
+  setTimeout(()=>m.remove(),1000);
+},3000);
 
+gift.onclick=()=>{
+  gift.style.display="none";
+  cake.style.display="block";
+  letter.style.display="block";
+  heartBurst();
+  boom(innerWidth/2,innerHeight/2);
+};
 </script>
-
 </body>
 </html>
