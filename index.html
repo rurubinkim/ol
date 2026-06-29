@@ -2,130 +2,138 @@
 <html lang="ko">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
 <title>아빠 생일 축하해요!</title>
 <style>
 *{box-sizing:border-box}
 body{
-  margin:0; min-height:100vh; overflow:hidden;
-  font-family:Arial,sans-serif; color:white; text-align:center;
-  background:radial-gradient(circle at top,#173b7a,#071126 70%);
+  margin:0;overflow:hidden;min-height:100vh;
+  font-family:Arial,sans-serif;text-align:center;color:white;
+  background:radial-gradient(circle at top,#173b7a,#030816 75%);
 }
+canvas{position:fixed;inset:0;z-index:0}
+.main{position:relative;z-index:3;padding-top:45px}
 h1{
-  margin:40px 15px 10px; font-size:clamp(32px,8vw,70px);
-  color:#ffe68a; text-shadow:0 0 20px gold,0 0 40px orange;
-  animation:glow 1.5s infinite alternate;
+  font-size:clamp(42px,8vw,90px);
+  color:#ffe98a;
+  text-shadow:0 0 15px #fff,0 0 40px gold,0 0 80px orange;
+  animation:pulse 1.4s infinite alternate;
 }
-@keyframes glow{to{text-shadow:0 0 30px #fff,0 0 60px gold}}
-.sub{font-size:22px}
+@keyframes pulse{to{transform:scale(1.04)}}
+.sub{font-size:24px;font-weight:bold}
 #gift{
-  font-size:clamp(100px,25vw,180px); cursor:pointer;
-  margin-top:20px; animation:bounce 1.2s infinite;
+  font-size:clamp(130px,23vw,230px);
+  cursor:pointer;
+  animation:bounce 1s infinite;
+  filter:drop-shadow(0 0 35px gold);
 }
-@keyframes bounce{50%{transform:translateY(-18px) rotate(4deg)}}
-#cake{
-  font-size:90px; display:none; margin-top:10px;
-}
+@keyframes bounce{50%{transform:translateY(-25px) rotate(5deg)}}
+#cake{display:none;font-size:120px;margin-top:10px;animation:pop .6s}
 #letter{
-  display:none; margin:20px auto; padding:25px;
-  width:min(90%,430px); border-radius:25px;
-  background:rgba(255,255,255,.14); backdrop-filter:blur(8px);
-  box-shadow:0 0 35px rgba(255,215,0,.8);
-  font-size:22px; line-height:1.6;
+  display:none;margin:20px auto;padding:28px;
+  width:min(90%,500px);border-radius:28px;
+  background:rgba(255,255,255,.16);backdrop-filter:blur(10px);
+  box-shadow:0 0 40px gold, inset 0 0 30px rgba(255,255,255,.2);
+  font-size:23px;line-height:1.65;animation:pop .7s;
 }
-.star,.confetti,.balloon,.heart,.fire{
-  position:fixed; pointer-events:none; z-index:-1;
+@keyframes pop{from{transform:scale(.2);opacity:0}to{transform:scale(1);opacity:1}}
+.float{
+  position:fixed;pointer-events:none;z-index:2;
+  animation:fall linear forwards;
 }
-.star{color:white; animation:twinkle 2s infinite alternate}
-@keyframes twinkle{from{opacity:.15}to{opacity:1}}
-.balloon{font-size:45px; animation:up 9s linear forwards; z-index:1}
-@keyframes up{from{transform:translateY(110vh)}to{transform:translateY(-160px)}}
-.confetti{font-size:24px; animation:fall 5s linear forwards; z-index:2}
-@keyframes fall{to{transform:translateY(110vh) rotate(720deg)}}
-.heart{font-size:28px; animation:fly 3s linear forwards; z-index:3}
-@keyframes fly{to{transform:translateY(-500px) scale(1.8);opacity:0}}
-.fire{
-  width:7px;height:7px;border-radius:50%;
-  background:gold; z-index:4;
-  animation:boom .9s ease-out forwards;
+@keyframes fall{to{transform:translateY(110vh) rotate(900deg);opacity:.9}}
+.heart{
+  position:fixed;pointer-events:none;z-index:5;font-size:30px;
+  animation:heart 3s forwards;
 }
-@keyframes boom{to{transform:translate(var(--x),var(--y));opacity:0}}
-.meteor{
-  position:fixed; width:120px; height:3px; pointer-events:none;
-  background:linear-gradient(90deg,white,transparent);
-  animation:meteor 1s linear forwards; z-index:0;
+@keyframes heart{to{transform:translateY(-600px) scale(2);opacity:0}}
+.moon{
+  position:fixed;right:55px;top:45px;font-size:70px;z-index:1;
+  filter:drop-shadow(0 0 30px #fff);
 }
-@keyframes meteor{to{transform:translate(-600px,350px);opacity:0}}
 </style>
 </head>
 <body>
+<canvas id="sky"></canvas>
+<div class="moon">🌙</div>
 
-<h1>🎉 아빠 생일 축하합니다! 🎉</h1>
-<p class="sub">아래 선물을 눌러보세요 ✨</p>
-<div id="gift">🎁</div>
-<div id="cake">🎂🕯️</div>
+<div class="main">
+  <h1>🎉 아빠 생일 축하합니다! 🎉</h1>
+  <p class="sub">선물을 눌러보세요 ✨</p>
+  <div id="gift">🎁</div>
+  <div id="cake">🎂🕯️✨</div>
 
-<div id="letter">
-  <b>💌 아빠께</b><br><br>
-  생일 정말 축하드려요! 🎉<br>
-  항상 우리 가족을 위해 열심히 일해주셔서 감사합니다.<br>
-  오래오래 건강하시고 행복한 일만 가득하세요.<br><br>
-  ❤️ 사랑합니다 ❤️
+  <div id="letter">
+    <b>💌 아빠께</b><br><br>
+    생일 정말 축하드려요! 🎉<br>
+    항상 우리 가족을 위해 열심히 일해주셔서 감사합니다.<br>
+    오래오래 건강하시고 행복한 일만 가득하세요.<br><br>
+    ❤️ 사랑합니다 ❤️
+  </div>
 </div>
 
 <script>
-const gift=document.getElementById("gift");
-const cake=document.getElementById("cake");
-const letter=document.getElementById("letter");
+const canvas=document.getElementById("sky"),ctx=canvas.getContext("2d");
+let W,H,stars=[],fires=[];
+function resize(){W=canvas.width=innerWidth;H=canvas.height=innerHeight}
+resize();addEventListener("resize",resize);
 
-for(let i=0;i<180;i++){
-  let s=document.createElement("div");
-  s.className="star"; s.innerHTML="✦";
-  s.style.left=Math.random()*100+"vw";
-  s.style.top=Math.random()*100+"vh";
-  s.style.fontSize=(6+Math.random()*16)+"px";
-  document.body.appendChild(s);
+for(let i=0;i<350;i++){
+  stars.push({x:Math.random()*W,y:Math.random()*H,r:Math.random()*2+0.5,a:Math.random(),s:Math.random()*0.03});
 }
 
-function confetti(){
-  let c=document.createElement("div");
-  c.className="confetti";
-  c.innerHTML=["🎊","🎉","✨","⭐","💛","💙"][Math.floor(Math.random()*6)];
-  c.style.left=Math.random()*100+"vw";
-  c.style.top="-40px";
-  document.body.appendChild(c);
-  setTimeout(()=>c.remove(),5000);
-}
-setInterval(confetti,130);
-
-function balloon(){
-  let b=document.createElement("div");
-  b.className="balloon";
-  b.innerHTML=["🎈","🎈","🎈","🎊"][Math.floor(Math.random()*4)];
-  b.style.left=Math.random()*100+"vw";
-  document.body.appendChild(b);
-  setTimeout(()=>b.remove(),9000);
-}
-setInterval(balloon,900);
-
-function boom(x,y){
-  for(let i=0;i<45;i++){
-    let f=document.createElement("div");
-    f.className="fire";
-    f.style.left=x+"px"; f.style.top=y+"px";
-    let a=Math.random()*Math.PI*2, r=70+Math.random()*120;
-    f.style.setProperty("--x",Math.cos(a)*r+"px");
-    f.style.setProperty("--y",Math.sin(a)*r+"px");
-    document.body.appendChild(f);
-    setTimeout(()=>f.remove(),900);
+function firework(x,y){
+  let colors=["#ffd700","#ff4d6d","#4cc9f0","#b8ff60","#ffffff","#ff9f1c"];
+  for(let i=0;i<90;i++){
+    let ang=Math.random()*Math.PI*2,spd=Math.random()*6+2;
+    fires.push({x,y,vx:Math.cos(ang)*spd,vy:Math.sin(ang)*spd,c:colors[Math.floor(Math.random()*colors.length)],life:80});
   }
 }
-setInterval(()=>boom(Math.random()*innerWidth,80+Math.random()*250),1400);
 
-function heartBurst(){
-  for(let i=0;i<80;i++){
+function draw(){
+  ctx.clearRect(0,0,W,H);
+
+  for(let s of stars){
+    s.a+=s.s;
+    ctx.globalAlpha=.3+Math.abs(Math.sin(s.a))*.7;
+    ctx.fillStyle="white";
+    ctx.beginPath();ctx.arc(s.x,s.y,s.r,0,Math.PI*2);ctx.fill();
+  }
+  ctx.globalAlpha=1;
+
+  for(let i=fires.length-1;i>=0;i--){
+    let p=fires[i];
+    p.x+=p.vx;p.y+=p.vy;p.vy+=0.05;p.life--;
+    ctx.globalAlpha=p.life/80;
+    ctx.fillStyle=p.c;
+    ctx.beginPath();ctx.arc(p.x,p.y,3,0,Math.PI*2);ctx.fill();
+    if(p.life<=0)fires.splice(i,1);
+  }
+  ctx.globalAlpha=1;
+  requestAnimationFrame(draw);
+}
+draw();
+
+setInterval(()=>firework(Math.random()*W,80+Math.random()*H*.45),900);
+
+function drop(){
+  let e=document.createElement("div");
+  e.className="float";
+  e.innerHTML=["🎊","🎉","✨","⭐","💛","💙","🎈"][Math.floor(Math.random()*7)];
+  e.style.left=Math.random()*100+"vw";
+  e.style.top="-50px";
+  e.style.fontSize=20+Math.random()*30+"px";
+  e.style.animationDuration=3+Math.random()*4+"s";
+  document.body.appendChild(e);
+  setTimeout(()=>e.remove(),7000);
+}
+setInterval(drop,70);
+
+function hearts(){
+  for(let i=0;i<120;i++){
     let h=document.createElement("div");
-    h.className="heart"; h.innerHTML=["❤️","💛","💖"][Math.floor(Math.random()*3)];
+    h.className="heart";
+    h.innerHTML=["❤️","💛","💖","💙"][Math.floor(Math.random()*4)];
     h.style.left=Math.random()*100+"vw";
     h.style.top="85vh";
     document.body.appendChild(h);
@@ -133,21 +141,12 @@ function heartBurst(){
   }
 }
 
-setInterval(()=>{
-  let m=document.createElement("div");
-  m.className="meteor";
-  m.style.left=60+Math.random()*40+"vw";
-  m.style.top=Math.random()*35+"vh";
-  document.body.appendChild(m);
-  setTimeout(()=>m.remove(),1000);
-},3000);
-
 gift.onclick=()=>{
   gift.style.display="none";
   cake.style.display="block";
   letter.style.display="block";
-  heartBurst();
-  boom(innerWidth/2,innerHeight/2);
+  hearts();
+  for(let i=0;i<8;i++)setTimeout(()=>firework(Math.random()*W,100+Math.random()*300),i*180);
 };
 </script>
 </body>
