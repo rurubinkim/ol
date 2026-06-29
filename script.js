@@ -174,12 +174,7 @@ const letterText =
 
 function typeLetter(){
   typed.textContent="";
-  let i=0;
-  const timer=setInterval(()=>{
-    typed.textContent+=letterText[i] || "";
-    i++;
-    if(i>=letterText.length) clearInterval(timer);
-  },1);
+  typed.textContent = letterText;
 }
 
 function showToast(text){
