@@ -179,7 +179,7 @@ function typeLetter(){
     typed.textContent+=letterText[i] || "";
     i++;
     if(i>=letterText.length) clearInterval(timer);
-  },10);
+  },1);
 }
 
 function showToast(text){
